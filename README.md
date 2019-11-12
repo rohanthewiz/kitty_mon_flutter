@@ -1,14 +1,10 @@
-# inc_dec
-![app screenshot](pics/flutter_inc_dec.png?raw=true "App Screenshot")
-## Starting out decently
+# Kitty Mon - Flutter
+A flutter app for Kitty Mon - Work in progress
 
 It is one thing to get pretty widgets to display on an emulator, however it is another
 to design with production in mind. I am talking about separating things so
  the app can easily grow without being cumbersome.
  
-- State is handled with MultiProvider at the top level
-- Code is structured under sensible directories - this is a work-in-progress, but this is a decent start
-- This will be a starter project only so we are keeping it light and easy to grok   
 
 ## Credit
 Dang it! Google did it again! THANK YOU for Flutter and Dart!!
