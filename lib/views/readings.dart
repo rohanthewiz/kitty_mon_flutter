@@ -33,27 +33,31 @@ class _ReadingsState extends State<Readings> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Kitty Mon - Flutter'),
-      ),
-      body: isLoading ?
+    return isLoading ?
       Center(child: CircularProgressIndicator()) :
-      ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              contentPadding: EdgeInsets.all(4.0),
-              title: new Text(list[index].Name),
-              trailing: new Text(list[index].Temp.toString()),
-            );
-          }),
-      bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            child: new Text("Fetch Data"),
-            onPressed: _fetchData,
-          )),
+    Column(
+      children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: RaisedButton(
+              child: new Text("Fetch Data"),
+              onPressed: _fetchData,
+            )),
+
+        ConstrainedBox(
+          constraints: BoxConstraints.tightForFinite(height: 500),
+          child: ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  contentPadding: EdgeInsets.all(4.0),
+                  title: new Text(list[index].Name),
+                  trailing: new Text(list[index].Temp.toString()),
+                );
+              }),
+        ),
+
+      ],
     );
   }
 }

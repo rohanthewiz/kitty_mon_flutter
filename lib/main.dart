@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kitty_mon_flutter/views/readings.dart';
+import 'package:kitty_mon_flutter/views/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.lightGreen,
         ),
-        home: Readings(),
+          home: MyHomePage()
       ),
     );
   }
