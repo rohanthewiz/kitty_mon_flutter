@@ -33,8 +33,25 @@ class _ReadingsState extends State<Readings> {
 
   @override
   Widget build(BuildContext context) {
+    var rows = <DataRow>[];
+    list.forEach((element) {
+      var row = DataRow(
+        cells: [
+          DataCell(
+              element.Status == "good" ?
+              Icon(Icons.check_circle_outline) :
+              Icon(Icons.brightness_high)
+          ),
+          DataCell(Text(element.Name)),
+          DataCell(Text((element.Temp / 1000).toString())),
+          DataCell(Text(element.MeasurementTimestamp)),
+        ],
+      );
+      rows.add(row);
+    });
+
     return isLoading ?
-      Center(child: CircularProgressIndicator()) :
+    Center(child: CircularProgressIndicator()) :
     Column(
       children: <Widget>[
         Padding(
@@ -46,15 +63,25 @@ class _ReadingsState extends State<Readings> {
 
         ConstrainedBox(
           constraints: BoxConstraints.tightForFinite(height: 500),
-          child: ListView.builder(
-              itemCount: list.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  contentPadding: EdgeInsets.all(4.0),
-                  title: new Text(list[index].Name),
-                  trailing: new Text(list[index].Temp.toString()),
-                );
-              }),
+          child: DataTable(
+            columnSpacing: 5,
+            columns: [
+              DataColumn(label: Text("Status")),
+              DataColumn(label: Text("Name")),
+              DataColumn(label: Text("Temp")),
+              DataColumn(label: Text("MeasuredAt")),
+            ],
+            rows: rows,
+          ),
+          //          child: ListView.builder(
+          //              itemCount: list.length,
+          //              itemBuilder: (BuildContext context, int index) {
+          //                return ListTile(
+          //                  contentPadding: EdgeInsets.all(4.0),
+          //                  title: new Text(list[index].Name),
+          //                  trailing: new Text(list[index].Temp.toString()),
+          //                );
+          //              }),
         ),
 
       ],
