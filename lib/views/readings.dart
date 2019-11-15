@@ -9,7 +9,7 @@ class Readings extends StatefulWidget {
 }
 
 class _ReadingsState extends State<Readings> {
-  var _apiUrl = 'http://162.220.53.58:9080/api/v1/l/8';
+  var _apiUrl = 'http://gonotes.net:9080/api/v1/l/8'; //'http://162.220.53.58:9080/api/v1/l/8';
   List<Reading> list = List();
   var isLoading = false;
 
@@ -33,29 +33,12 @@ class _ReadingsState extends State<Readings> {
 
   @override
   Widget build(BuildContext context) {
-    var rows = <DataRow>[];
-    list.forEach((element) {
-      var row = DataRow(
-        cells: [
-          DataCell(
-              element.Status == "good" ?
-              Icon(Icons.check_circle_outline) :
-              Icon(Icons.brightness_high)
-          ),
-          DataCell(Text(element.Name)),
-          DataCell(Text((element.Temp / 1000).toString())),
-          DataCell(Text(element.MeasurementTimestamp)),
-        ],
-      );
-      rows.add(row);
-    });
-
     return isLoading ?
     Center(child: CircularProgressIndicator()) :
     Column(
       children: <Widget>[
         Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(5.0),
             child: RaisedButton(
               child: new Text("Fetch Data"),
               onPressed: _fetchData,
@@ -71,19 +54,23 @@ class _ReadingsState extends State<Readings> {
               DataColumn(label: Text("Temp")),
               DataColumn(label: Text("MeasuredAt")),
             ],
-            rows: rows,
+            rows: <DataRow>[
+              for (var element in list)
+                DataRow(
+                  cells: [
+                    DataCell(
+                        element.Status == "good" ?
+                        Icon(Icons.check_circle_outline) :
+                        Icon(Icons.brightness_high)
+                    ),
+                    DataCell(Text(element.Name)),
+                    DataCell(Text((element.Temp / 1000).toString())),
+                    DataCell(Text(element.MeasurementTimestamp)),
+                  ],
+                ),
+            ],
           ),
-          //          child: ListView.builder(
-          //              itemCount: list.length,
-          //              itemBuilder: (BuildContext context, int index) {
-          //                return ListTile(
-          //                  contentPadding: EdgeInsets.all(4.0),
-          //                  title: new Text(list[index].Name),
-          //                  trailing: new Text(list[index].Temp.toString()),
-          //                );
-          //              }),
         ),
-
       ],
     );
   }
