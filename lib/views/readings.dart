@@ -56,20 +56,24 @@ class _ReadingsState extends State<Readings> {
               onPressed: _fetchData,
             )),
 
-        ConstrainedBox(
-          constraints: BoxConstraints.tightForFinite(height: 100),
-          child: DataTable(
-            columnSpacing: 5,
-            columns: [
-              DataColumn(label: Text("Status")),
-              DataColumn(label: Text("Name")),
-              DataColumn(label: Text("Temp")),
-              DataColumn(label: Text("MeasuredAt")),
-            ],
-            rows: <DataRow>[
-              for (var element in list)
-                _buildDataRow(element),
-            ],
+        Expanded(
+          //constraints: BoxConstraints(maxHeight: 500),
+          child:
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: DataTable(
+              columnSpacing: 8,
+              columns: [
+                DataColumn(label: Text("Status")),
+                DataColumn(label: Text("Name")),
+                DataColumn(label: Text("Temp")),
+                DataColumn(label: Text("MeasuredAt")),
+              ],
+              rows: <DataRow>[
+                for (var element in list)
+                  _buildDataRow(element),
+              ],
+            ),
           ),
         ),
       ],
