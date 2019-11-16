@@ -9,7 +9,7 @@ class Readings extends StatefulWidget {
 }
 
 class _ReadingsState extends State<Readings> {
-  var _apiUrl = 'http://gonotes.net:9080/api/v1/l/8'; //'http://162.220.53.58:9080/api/v1/l/8';
+  var _apiUrl = 'http://gonotes.net:9080/api/v1/l/8';
   List<Reading> list = List();
   var isLoading = false;
 
@@ -33,19 +33,21 @@ class _ReadingsState extends State<Readings> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ?
-    Center(child: CircularProgressIndicator()) :
-    Column(
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    return Column(
       children: <Widget>[
         Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(7.0),
             child: RaisedButton(
               child: new Text("Fetch Data"),
               onPressed: _fetchData,
             )),
 
         ConstrainedBox(
-          constraints: BoxConstraints.tightForFinite(height: 500),
+          constraints: BoxConstraints.tightForFinite(height: 100),
           child: DataTable(
             columnSpacing: 5,
             columns: [
@@ -56,22 +58,37 @@ class _ReadingsState extends State<Readings> {
             ],
             rows: <DataRow>[
               for (var element in list)
-                DataRow(
-                  cells: [
-                    DataCell(
-                        element.Status == "good" ?
-                        Icon(Icons.check_circle_outline) :
-                        Icon(Icons.brightness_high)
-                    ),
-                    DataCell(Text(element.Name)),
-                    DataCell(Text((element.Temp / 1000).toString())),
-                    DataCell(Text(element.MeasurementTimestamp)),
-                  ],
-                ),
+                _buildDataRow(element),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  DataRow _buildDataRow(Reading r) {
+    Icon statusIcon;
+
+    var dte = DateTime.parse(
+        r.MeasurementTimestamp.split('.')[0] + "Z").toLocal();
+
+    if (DateTime.now().difference(dte).inMinutes > 30) {
+      statusIcon = Icon(Icons.airline_seat_flat_angled);
+    } else if(r.Status == "warm") {
+      statusIcon = Icon(Icons.brightness_4);
+    } else if(r.Status == "hot") {
+      statusIcon = Icon(Icons.brightness_high);
+    } else {
+      statusIcon = Icon(Icons.check_circle_outline);
+    }
+
+    return DataRow(
+      cells: [
+        DataCell(statusIcon),
+        DataCell(Text(r.Name)),
+        DataCell(Text((r.Temp / 1000).toString())),
+        DataCell(Text("${dte.hour}:${dte.minute}  ${dte.month}/${dte.day}")),
+      ]
     );
   }
 }
