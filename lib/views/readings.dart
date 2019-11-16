@@ -68,25 +68,32 @@ class _ReadingsState extends State<Readings> {
 
   DataRow _buildDataRow(Reading r) {
     Icon statusIcon;
+    Color tColor;
 
     var dte = DateTime.parse(
         r.MeasurementTimestamp.split('.')[0] + "Z").toLocal();
 
     if (DateTime.now().difference(dte).inMinutes > 30) {
-      statusIcon = Icon(Icons.airline_seat_flat_angled);
+      tColor = Colors.blueGrey;
+      statusIcon = Icon(Icons.airline_seat_flat_angled, color: tColor,);
     } else if(r.Status == "warm") {
-      statusIcon = Icon(Icons.brightness_4);
+      tColor = Colors.orange;
+      statusIcon = Icon(Icons.brightness_4, color: tColor);
     } else if(r.Status == "hot") {
-      statusIcon = Icon(Icons.brightness_high);
+      tColor = Colors.red;
+      statusIcon = Icon(Icons.brightness_high, color: tColor);
     } else {
-      statusIcon = Icon(Icons.check_circle_outline);
+      tColor = Colors.green;
+      statusIcon = Icon(Icons.check_circle_outline, color: tColor);
     }
 
     return DataRow(
       cells: [
         DataCell(statusIcon),
         DataCell(Text(r.Name)),
-        DataCell(Text((r.Temp / 1000).toString())),
+        DataCell(Text((r.Temp / 1000).toString(),
+                style: TextStyle(color: tColor)
+        )),
         DataCell(Text("${dte.hour}:${dte.minute}  ${dte.month}/${dte.day}")),
       ]
     );
