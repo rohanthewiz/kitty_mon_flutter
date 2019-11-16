@@ -104,7 +104,10 @@ class _ReadingsState extends State<Readings> {
         DataCell(Text((r.Temp / 1000).toString(),
                 style: TextStyle(color: tColor)
         )),
-        DataCell(Text("${dte.hour}:${dte.minute}  ${dte.month}/${dte.day}")),
+        DataCell(Text(
+            "${dte.hour < 10 ? '0${dte.hour}' : dte.hour}:${dte.minute < 10
+                ? '0${dte.minute}'
+                : dte.minute}  ${dte.month}/${dte.day}")),
       ]
     );
   }
