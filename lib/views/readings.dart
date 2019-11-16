@@ -9,7 +9,8 @@ class Readings extends StatefulWidget {
 }
 
 class _ReadingsState extends State<Readings> {
-  var _apiUrl = 'http://gonotes.net:9080/api/v1/l/8';
+  static const numOfReadings = 18;
+  var _apiUrl = 'http://gonotes.net:9080/api/v1/l/$numOfReadings';
   List<Reading> list = List();
   var isLoading = false;
 
@@ -17,11 +18,10 @@ class _ReadingsState extends State<Readings> {
     setState(() {
       isLoading = true;
     });
-    final response =
-    await http.get(_apiUrl);
+    final response = await http.get(_apiUrl);
     if (response.statusCode == 200) {
       list = (json.decode(response.body) as List)
-          .map((data) => new Reading.fromJson(data))
+          .map((data) => Reading.fromJson(data))
           .toList();
       setState(() {
         isLoading = false;
@@ -40,9 +40,19 @@ class _ReadingsState extends State<Readings> {
     return Column(
       children: <Widget>[
         Padding(
-            padding: const EdgeInsets.all(7.0),
+            padding: const EdgeInsets.all(8.0),
             child: RaisedButton(
-              child: new Text("Fetch Data"),
+              child:
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.cloud_download),
+                  Padding(
+                      padding: EdgeInsets.only(left: 9.0),
+                      child: Text("Fetch Data")
+                  ),
+                ],
+              ),
               onPressed: _fetchData,
             )),
 
