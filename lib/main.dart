@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [], //ChangeNotifierProvider(builder: (_) => Counter(0)),
       child: MaterialApp(
-        title: 'Flutter Demo',
+          title: 'Kitty Monitor',
         theme: ThemeData(
           primarySwatch: Colors.lightGreen,
         ),
